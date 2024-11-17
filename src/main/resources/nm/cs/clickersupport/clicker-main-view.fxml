@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="TOP_CENTER" spacing="15.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="nm.cs.clickersupport.ClickerMainController">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Text text="Clicker Support" styleClass="header-text"/>
+
+    <Button fx:id="toggleButton"  text="Start Clicking" onAction="#toggleClick" styleClass="start-button"/>
+</VBox>
