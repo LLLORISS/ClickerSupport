@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="nm.cs.clickersupport.ChangeParametersController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <Label text="Number of Clicks:" layoutX="20" layoutY="30" styleClass="label-subtitle" />
+    <TextField fx:id="clicksField" layoutX="180" layoutY="30" prefWidth="200" />
+
+    <Label text="Delay (ms):" layoutX="20" layoutY="80" styleClass="label-subtitle" />
+    <TextField fx:id="delayField" layoutX="180" layoutY="80" prefWidth="200" />
+
+    <Button text="Save Parameters" layoutX="180" layoutY="130" onAction="#saveParameters" />
+</AnchorPane>

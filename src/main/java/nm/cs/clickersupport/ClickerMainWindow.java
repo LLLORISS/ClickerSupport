@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,6 +30,16 @@ public class ClickerMainWindow extends Application {
         });
 
         stage.show();
+
+        Screen screen = Screen.getPrimary();
+        double screenWidth = screen.getVisualBounds().getWidth();
+        double screenHeight = screen.getVisualBounds().getHeight();
+
+        double windowWidth = stage.getWidth();
+        double windowHeight = stage.getHeight();
+
+        stage.setX((screenWidth - windowWidth) / 2);
+        stage.setY((screenHeight - windowHeight) / 2);
     }
 
     public static void main(String[] args) {

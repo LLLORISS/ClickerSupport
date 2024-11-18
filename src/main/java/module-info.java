@@ -13,6 +13,7 @@ module nm.cs.clickersupport {
     requires java.desktop;
     requires jnativehook;
     requires java.logging;
+    requires java.prefs;
 
     opens nm.cs.clickersupport to javafx.fxml;
     exports nm.cs.clickersupport;

@@ -42,7 +42,6 @@
     -fx-background-color: #2ecc71;
 }
 
-
 @media screen and (max-width: 600px) {
     .header-text {
         -fx-font-size: 18px;
@@ -56,4 +55,50 @@
     .root {
         -fx-padding: 10px;
     }
+}
+
+.tooltip-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-background-radius: 50%;
+    -fx-padding: 5;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+}
+
+.tooltip {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-effect: none;
+    -fx-border-width: 0;
+}
+
+.tooltip .tooltip-content {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-border-width: 0;
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-font-family: Arial, sans-serif;
+    -fx-text-fill: #FFFFFF;
+    -fx-label-padding: 5px;
+    -fx-background-color: transparent;
+}
+
+.label-header {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FF6347;
+}
+
+.label-subtitle {
+    -fx-font-size: 16px;
+    -fx-text-fill: #1E90FF;
 }

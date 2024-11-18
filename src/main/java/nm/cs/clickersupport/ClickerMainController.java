@@ -4,23 +4,43 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyAdapter;
 import org.jnativehook.keyboard.NativeKeyEvent;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ClickerMainController {
     @FXML
     private Button toggleButton;
+    @FXML
+    private Button ChangeParameters;
+
     private final Clicker clicker = new Clicker();
 
     private boolean altPressed = false;
     private boolean bPressed = false;
+
+    @FXML
+    private Button tooltipButton;
+
+    public void initialize() {
+        Tooltip tooltip = new Tooltip("Гарячі клавіші для запуску: { ALT + B }.");
+        tooltip.setShowDelay(Duration.millis(200));
+        tooltip.setHideDelay(Duration.millis(100));
+
+        tooltipButton.setTooltip(tooltip);
+    }
 
     public void initializeNativeHook(){
         try{
@@ -76,6 +96,8 @@ public class ClickerMainController {
             clicker.stopClicking();
             Platform.runLater(() -> {
                 toggleButton.setText("Start Clicking");
+                toggleButton.setStyle("-fx-background-color: #27ae60;");
+                toggleButton.setDisable(false);
             });
             System.out.println("[ClickerSupport]: Stop button has been pressed");
         } else {
@@ -94,8 +116,25 @@ public class ClickerMainController {
             clicker.startClicking(0.25,5);
             Platform.runLater(() -> {
                 toggleButton.setText("Stop Clicking");
+                toggleButton.setStyle("-fx-background-color: red;");
             });
             System.out.println("[ClickerSupport]: Start button has been pressed");
+        }
+    }
+
+    @FXML
+    protected void openChangeParameters(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("change-parameters-view.fxml"));
+            Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles.css").toExternalForm());
+
+            Stage stage = new Stage();
+            stage.setTitle("Change Parameters");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

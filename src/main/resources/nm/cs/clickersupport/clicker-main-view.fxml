@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
@@ -12,5 +13,11 @@
 
     <Text text="Clicker Support" styleClass="header-text"/>
 
-    <Button fx:id="toggleButton"  text="Start Clicking" onAction="#toggleClick" styleClass="start-button"/>
+    <HBox alignment="CENTER" spacing="10">
+        <Button fx:id="toggleButton" text="Start Clicking" onAction="#toggleClick" styleClass="start-button"/>
+
+        <Button fx:id="tooltipButton" text="?" styleClass="tooltip-button"/>
+
+        <Button fx:id="changeParameters" text="Змінити параметри" onAction="#openChangeParameters" styleClass="change-parameters-button"/>
+    </HBox>
 </VBox>
