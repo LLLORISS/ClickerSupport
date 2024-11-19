@@ -87,7 +87,7 @@
 .label {
     -fx-font-size: 14px;
     -fx-font-family: Arial, sans-serif;
-    -fx-text-fill: #FFFFFF;
+    -fx-text-fill: #ecf0f1;
     -fx-label-padding: 5px;
     -fx-background-color: transparent;
 }
@@ -102,3 +102,12 @@
     -fx-font-size: 16px;
     -fx-text-fill: #1E90FF;
 }
+
+.text-style {
+    -fx-font-size: 16px;
+    -fx-font-family: "Arial";
+    -fx-fill: #ff6347;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+}
+

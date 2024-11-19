@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -38,6 +39,12 @@ public class ClickerMainController {
     @FXML
     private Button tooltipButton;
 
+    @FXML
+    private Label currentIntervalLabel;
+    @FXML
+    private Label currentClickCountLabel;
+
+
     public void initialize() {
         Tooltip tooltip = new Tooltip("Гарячі клавіші для запуску: { ALT + B }.");
         tooltip.setShowDelay(Duration.millis(200));
@@ -46,6 +53,11 @@ public class ClickerMainController {
         tooltipButton.setTooltip(tooltip);
 
         loadConfigParameters();
+    }
+
+    public void updateParametersLabel(Double newInterval, Integer newClickCount){
+        this.currentIntervalLabel.setText(newInterval.toString());
+        this.currentClickCountLabel.setText(newClickCount.toString());
     }
 
     public void initializeNativeHook(){
@@ -96,6 +108,8 @@ public class ClickerMainController {
         ConfigManager cfgManager = new ConfigManager();
         this.clickCount = cfgManager.getClickCount();
         this.interval = cfgManager.getInterval();
+
+        updateParametersLabel(this.interval, this.clickCount);
     }
 
     @FXML
@@ -140,6 +154,12 @@ public class ClickerMainController {
     protected void openChangeParameters(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("change-parameters-view.fxml"));
+            loader.setControllerFactory(c -> {
+                ChangeParametersController controller = new ChangeParametersController();
+                controller.setMainController(this);
+                return controller;
+            });
+
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles.css").toExternalForm());
 
