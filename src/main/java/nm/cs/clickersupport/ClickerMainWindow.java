@@ -7,11 +7,26 @@ import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 public class ClickerMainWindow extends Application {
+    private static final String CONFIG_FILE = "config_clicker.json";
+
     @Override
     public void start(Stage stage) throws IOException {
+        File configFile = new File(CONFIG_FILE);
+        if (!configFile.exists()) {
+            try {
+                configFile.createNewFile();
+                ConfigManager cfgManager = new ConfigManager();
+                Config cfg = new Config(0.25,5);
+                cfgManager.saveConfig(cfg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         FXMLLoader fxmlLoader = new FXMLLoader(ClickerMainWindow.class.getResource("clicker-main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 800);
         scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles.css").toExternalForm());

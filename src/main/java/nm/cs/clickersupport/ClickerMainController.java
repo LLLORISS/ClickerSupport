@@ -16,6 +16,7 @@ import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyAdapter;
 import org.jnativehook.keyboard.NativeKeyEvent;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +32,9 @@ public class ClickerMainController {
     private boolean altPressed = false;
     private boolean bPressed = false;
 
+    private int clickCount;
+    private double interval;
+
     @FXML
     private Button tooltipButton;
 
@@ -40,6 +44,8 @@ public class ClickerMainController {
         tooltip.setHideDelay(Duration.millis(100));
 
         tooltipButton.setTooltip(tooltip);
+
+        loadConfigParameters();
     }
 
     public void initializeNativeHook(){
@@ -86,9 +92,17 @@ public class ClickerMainController {
         }
     }
 
+    private void loadConfigParameters() {
+        ConfigManager cfgManager = new ConfigManager();
+        this.clickCount = cfgManager.getClickCount();
+        this.interval = cfgManager.getInterval();
+    }
+
     @FXML
     protected void toggleClick() {
         toggleButton.setDisable(true);
+
+        loadConfigParameters();
 
         if (clicker.getClickingStatus()) {
             clicker.swapClickingStatus();
@@ -113,7 +127,7 @@ public class ClickerMainController {
             timeline.setCycleCount(1);
             timeline.play();
 
-            clicker.startClicking(0.25,5);
+            clicker.startClicking(this.interval,this.clickCount);
             Platform.runLater(() -> {
                 toggleButton.setText("Stop Clicking");
                 toggleButton.setStyle("-fx-background-color: red;");

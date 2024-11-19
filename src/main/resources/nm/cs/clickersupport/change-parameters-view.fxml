@@ -15,7 +15,7 @@
     <TextField fx:id="clicksField" layoutX="180" layoutY="30" prefWidth="200" />
 
     <Label text="Delay (ms):" layoutX="20" layoutY="80" styleClass="label-subtitle" />
-    <TextField fx:id="delayField" layoutX="180" layoutY="80" prefWidth="200" />
+    <TextField fx:id="intervalField" layoutX="180" layoutY="80" prefWidth="200" />
 
     <Button text="Save Parameters" layoutX="180" layoutY="130" onAction="#saveParameters" />
 </AnchorPane>

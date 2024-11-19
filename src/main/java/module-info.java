@@ -10,10 +10,10 @@ module nm.cs.clickersupport {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
-    requires java.desktop;
     requires jnativehook;
+    requires com.fasterxml.jackson.databind;
     requires java.logging;
-    requires java.prefs;
+    requires java.desktop;
 
     opens nm.cs.clickersupport to javafx.fxml;
     exports nm.cs.clickersupport;
