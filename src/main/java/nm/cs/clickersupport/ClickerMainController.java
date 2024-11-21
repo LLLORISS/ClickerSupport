@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.jnativehook.GlobalScreen;
@@ -17,7 +17,6 @@ import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyAdapter;
 import org.jnativehook.keyboard.NativeKeyEvent;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,8 +24,6 @@ import java.util.logging.Logger;
 public class ClickerMainController {
     @FXML
     private Button toggleButton;
-    @FXML
-    private Button ChangeParameters;
 
     private final Clicker clicker = new Clicker();
 
@@ -44,6 +41,16 @@ public class ClickerMainController {
     @FXML
     private Label currentClickCountLabel;
 
+    @FXML
+    private Circle statusIndicator;
+    @FXML
+    private Label statusLabel;
+    @FXML
+    private Label runTimeLabel;
+
+    private Timeline clickerTimer;
+    private int elapsedTime = 0;
+
 
     public void initialize() {
         Tooltip tooltip = new Tooltip("Гарячі клавіші для запуску: { ALT + B }.");
@@ -53,6 +60,46 @@ public class ClickerMainController {
         tooltipButton.setTooltip(tooltip);
 
         loadConfigParameters();
+
+    }
+
+    private void startTimer(){
+        this.elapsedTime = 0;
+
+        clickerTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            elapsedTime++;
+            Platform.runLater(() -> updateElapsedTime(elapsedTime));
+        }));
+        clickerTimer.setCycleCount(Timeline.INDEFINITE);
+        clickerTimer.play();
+    }
+
+    private void stopTimer() {
+        if (clickerTimer != null) {
+            clickerTimer.stop();
+        }
+    }
+
+    private void updateElapsedTime(int timeInSeconds) {
+        this.runTimeLabel.setText("Час роботи: " + formatTime(timeInSeconds));
+    }
+
+    private String formatTime(int seconds) {
+        int minutes = seconds / 60;
+        int remainingSeconds = seconds % 60;
+        return String.format("%02d:%02d", minutes, remainingSeconds);
+    }
+
+    public void swapClickingStatus(boolean isActive){
+        if (isActive) {
+            clicker.swapClickingStatus();
+            statusIndicator.setStyle("-fx-fill: green;");
+            statusLabel.setText("Клікер увімкнено");
+        } else {
+            clicker.swapClickingStatus();
+            statusIndicator.setStyle("-fx-fill: red;");
+            statusLabel.setText("Клікер вимкнено");
+        }
     }
 
     public void updateParametersLabel(Double newInterval, Integer newClickCount){
@@ -119,8 +166,9 @@ public class ClickerMainController {
         loadConfigParameters();
 
         if (clicker.getClickingStatus()) {
-            clicker.swapClickingStatus();
+            this.swapClickingStatus(false);
 
+            this.stopTimer();
             clicker.stopClicking();
             Platform.runLater(() -> {
                 toggleButton.setText("Start Clicking");
@@ -129,7 +177,7 @@ public class ClickerMainController {
             });
             System.out.println("[ClickerSupport]: Stop button has been pressed");
         } else {
-            clicker.swapClickingStatus();
+            this.swapClickingStatus(true);
 
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.seconds(2), e -> {
@@ -141,6 +189,7 @@ public class ClickerMainController {
             timeline.setCycleCount(1);
             timeline.play();
 
+            this.startTimer();
             clicker.startClicking(this.interval,this.clickCount);
             Platform.runLater(() -> {
                 toggleButton.setText("Stop Clicking");

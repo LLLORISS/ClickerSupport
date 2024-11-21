@@ -2,16 +2,9 @@ package nm.cs.clickersupport;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
-
 public class ChangeParametersController {
-    @FXML
-    private Button saveParametersButton;
-
     @FXML
     private TextField clicksField;
     @FXML
@@ -40,9 +33,8 @@ public class ChangeParametersController {
         }
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Успіх");
-        alert.setHeaderText("Конфігурацію збережено");
-        alert.setContentText("Ваші параметри було збережено");
+        alert.setTitle("Конфігурацію збережено");
+        alert.setHeaderText("Ваші параметри було збережено");
 
         alert.showAndWait();
     }

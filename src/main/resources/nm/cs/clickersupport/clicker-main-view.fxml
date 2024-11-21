@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
 
 <VBox alignment="TOP_CENTER" spacing="15.0" xmlns:fx="http://javafx.com/fxml"
@@ -11,6 +12,13 @@
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="status-panel">
+        <Circle fx:id="statusIndicator" radius="10" fill="red"/>
+        <Label fx:id="statusLabel" text="Клікер вимкнено" styleClass="status-label"/>
+        <Label fx:id="runTimeLabel" text="Час роботи: 00:00" styleClass="status-label"/>
+        <HBox fx:id="additionalButtons" alignment="CENTER" spacing="5" prefWidth="200.0"/>
+    </HBox>
 
     <Text text="Clicker Support" styleClass="header-text"/>
 
