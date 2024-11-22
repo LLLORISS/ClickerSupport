@@ -6,9 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -214,10 +212,24 @@ public class ClickerMainController {
 
             Stage stage = new Stage();
             stage.setTitle("Change Parameters");
+            stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void exitAction(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Are you sure you want to exit?");
+        alert.setContentText("Changes will not be saved.");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            Platform.exit();
+            System.exit(0);
         }
     }
 }

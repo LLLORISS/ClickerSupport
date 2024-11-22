@@ -6,6 +6,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
 
 <VBox alignment="TOP_CENTER" spacing="15.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="nm.cs.clickersupport.ClickerMainController">
@@ -13,28 +16,39 @@
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
+    <Text text="Clicker Support" styleClass="header-text"/>
+
     <HBox alignment="CENTER_LEFT" spacing="10" styleClass="status-panel">
         <Circle fx:id="statusIndicator" radius="10" fill="red"/>
         <Label fx:id="statusLabel" text="Клікер вимкнено" styleClass="status-label"/>
         <Label fx:id="runTimeLabel" text="Час роботи: 00:00" styleClass="status-label"/>
-        <HBox fx:id="additionalButtons" alignment="CENTER" spacing="5" prefWidth="200.0"/>
-    </HBox>
-
-    <Text text="Clicker Support" styleClass="header-text"/>
-
-    <HBox alignment="CENTER" spacing="10">
-        <Button fx:id="toggleButton" text="Start Clicking" onAction="#toggleClick" styleClass="start-button"/>
-        <Button fx:id="tooltipButton" text="?" styleClass="tooltip-button"/>
-        <Button fx:id="changeParameters" text="Змінити параметри" onAction="#openChangeParameters" styleClass="change-parameters-button"/>
-    </HBox>
-
-    <HBox alignment="CENTER" spacing="10">
-        <Text text="Поточний інтервал:" styleClass="text-style"/>
-        <Label fx:id="currentIntervalLabel" text="0" styleClass="label"/>
+        <HBox fx:id="additionalButtons" alignment="CENTER" spacing="5" prefWidth="200.0">
+            <MenuBar>
+                <Menu text="Menu">
+                    <MenuItem text="Change Parameters" styleClass="menu-item" onAction="#openChangeParameters"/>
+                    <MenuItem text="Exit" styleClass="menu-item" onAction="#exitAction"/>
+                </Menu>
+            </MenuBar>
+        </HBox>
     </HBox>
 
     <HBox alignment="CENTER" spacing="10">
-        <Text text="Поточна кількість кліків:" styleClass="text-style"/>
-        <Label fx:id="currentClickCountLabel" text="0" styleClass="label"/>
+        <VBox alignment="CENTER" spacing="10">
+            <HBox alignment="CENTER" spacing="10">
+                <Button fx:id="toggleButton" text="Start Clicking" onAction="#toggleClick" styleClass="start-button"/>
+                <Button fx:id="tooltipButton" text="?" styleClass="tooltip-button"/>
+            </HBox>
+        </VBox>
     </HBox>
+
+    <VBox styleClass="config-box" alignment="CENTER" spacing="10">
+        <HBox alignment="CENTER" spacing="10">
+            <Text text="Поточний інтервал:" styleClass="text-style"/>
+            <Label fx:id="currentIntervalLabel" text="0" styleClass="label"/>
+        </HBox>
+        <HBox alignment="CENTER" spacing="10">
+            <Text text="Поточна кількість кліків:" styleClass="text-style"/>
+            <Label fx:id="currentClickCountLabel" text="0" styleClass="label"/>
+    </HBox>
+    </VBox>
 </VBox>

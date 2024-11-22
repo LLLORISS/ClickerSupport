@@ -28,7 +28,7 @@ public class ClickerMainWindow extends Application {
         }
 
         FXMLLoader fxmlLoader = new FXMLLoader(ClickerMainWindow.class.getResource("clicker-main-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 800);
+        Scene scene = new Scene(fxmlLoader.load(), 700, 800);
         scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles.css").toExternalForm());
 
         ClickerMainController controller = fxmlLoader.getController();
@@ -38,6 +38,8 @@ public class ClickerMainWindow extends Application {
         stage.setTitle("ClickerSupport");
         stage.getIcons().add(new Image(ClickerMainWindow.class.getResourceAsStream("/icons/favicon2.png")));
         stage.setScene(scene);
+
+        stage.setResizable(false);
 
         stage.setOnCloseRequest(event -> {
             System.out.println("[ClickerSupport] Program has been closed.");
