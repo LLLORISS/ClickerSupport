@@ -1,0 +1,7 @@
+/*Styles for config box*/
+
+.config-box {
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+    -fx-border-color: #34495e;
+}

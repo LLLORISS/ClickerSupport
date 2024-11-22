@@ -13,6 +13,16 @@ import java.io.IOException;
 public class ClickerMainWindow extends Application {
     private static final String CONFIG_FILE = "config_clicker.json";
 
+    private void importStyles(Scene scene){
+        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/buttons.css").toExternalForm());
+        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/config-box.css").toExternalForm());
+        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/labels.css").toExternalForm());
+        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/main.css").toExternalForm());
+        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/menu.css").toExternalForm());
+        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/status.css").toExternalForm());
+        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/tooltips.css").toExternalForm());
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         File configFile = new File(CONFIG_FILE);
@@ -29,7 +39,7 @@ public class ClickerMainWindow extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(ClickerMainWindow.class.getResource("clicker-main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 700, 800);
-        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles.css").toExternalForm());
+        this.importStyles(scene);
 
         ClickerMainController controller = fxmlLoader.getController();
 

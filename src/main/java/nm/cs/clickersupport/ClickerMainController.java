@@ -49,6 +49,11 @@ public class ClickerMainController {
     private Timeline clickerTimer;
     private int elapsedTime = 0;
 
+    private void importStyles(Scene scene){
+        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/buttons.css").toExternalForm());
+        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/labels.css").toExternalForm());
+        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/main.css").toExternalForm());
+    }
 
     public void initialize() {
         Tooltip tooltip = new Tooltip("Гарячі клавіші для запуску: { ALT + B }.");
@@ -208,7 +213,7 @@ public class ClickerMainController {
             });
 
             Scene scene = new Scene(loader.load());
-            scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles.css").toExternalForm());
+            this.importStyles(scene);
 
             Stage stage = new Stage();
             stage.setTitle("Change Parameters");
