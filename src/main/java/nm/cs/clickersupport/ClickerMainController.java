@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -49,6 +50,8 @@ public class ClickerMainController {
     private Timeline clickerTimer;
     private int elapsedTime = 0;
 
+    CirclesManager cManager;
+
     private void importStyles(Scene scene){
         scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/buttons.css").toExternalForm());
         scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/labels.css").toExternalForm());
@@ -61,6 +64,8 @@ public class ClickerMainController {
         tooltip.setHideDelay(Duration.millis(100));
 
         tooltipButton.setTooltip(tooltip);
+
+        this.cManager = new CirclesManager();
 
         loadConfigParameters();
 
@@ -240,7 +245,23 @@ public class ClickerMainController {
 
     @FXML
     protected void addCircleButton(){
-        FloatingWidget widget = new FloatingWidget();
+        FloatingWidget widget = new FloatingWidget(this.cManager);
         widget.start();
+    }
+
+    @FXML
+    protected void removeCircleButton(){
+        if(cManager.getCount() != 0) {
+            Stage lastOpenedStage = (Stage) Stage.getWindows()
+                    .stream()
+                    .filter(Window::isShowing)
+                    .reduce((first, second) -> second)
+                    .orElse(null);
+
+            if (lastOpenedStage != null && cManager.getCount() != 0) {
+                lastOpenedStage.close();
+                cManager.removeCircle();
+            }
+        }
     }
 }

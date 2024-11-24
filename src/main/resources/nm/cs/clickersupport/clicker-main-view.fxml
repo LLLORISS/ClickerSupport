@@ -38,6 +38,7 @@
                 <Button fx:id="toggleButton" text="Start Clicking" onAction="#toggleClick" styleClass="start-button"/>
                 <Button fx:id="tooltipButton" text="?" styleClass="tooltip-button"/>
                 <Button fx:id="addCircle" text="+" styleClass="start-button" onAction="#addCircleButton"/>
+                <Button fx:id="removeCircle" text="-" styleClass="start-button" onAction="#removeCircleButton"/>
             </HBox>
         </VBox>
     </HBox>
