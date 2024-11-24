@@ -12,3 +12,17 @@
     -fx-font-weight: bold;
     -fx-margin-bottom: 20px;
 }
+
+.check-box {
+    -fx-text-fill: #ecf0f1;
+    -fx-font-size: 14px;
+    -fx-font-family: Arial, sans-serif;
+}
+
+.check-box:hover {
+    -fx-text-fill: #1abc9c;
+}
+
+.check-box:selected {
+    -fx-text-fill: #3498db;
+}

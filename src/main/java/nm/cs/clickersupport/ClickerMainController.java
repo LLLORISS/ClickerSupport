@@ -64,6 +64,11 @@ public class ClickerMainController {
         scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/buttons.css").toExternalForm());
         scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/labels.css").toExternalForm());
         scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/main.css").toExternalForm());
+        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/tooltips.css").toExternalForm());
+    }
+
+    public CLICKER_TYPE getClickerType(){
+        return this.clickerType;
     }
 
     public void initialize() {
@@ -179,6 +184,7 @@ public class ClickerMainController {
     protected void toggleClick() {
         switch(this.clickerType){
             case CLICKER_TYPE.CLICKING -> {
+                System.out.println("[ClickerSupport]: Clicking");
                 toggleButton.setDisable(true);
 
                 loadConfigParameters();
@@ -218,10 +224,82 @@ public class ClickerMainController {
                 }
             }
             case CLICKER_TYPE.GRADUAL -> {
+                System.out.println("[ClickerSupport]: Gradual");
 
+                toggleButton.setDisable(true);
+
+                if (clicker.getClickingStatus()) {
+                    this.swapClickingStatus(false);
+
+                    this.stopTimer();
+                    //clicker.stopClicking();
+                    Platform.runLater(() -> {
+                        toggleButton.setText("Start Clicking");
+                        toggleButton.setStyle("-fx-background-color: #27ae60;");
+                        toggleButton.setDisable(false);
+                    });
+                    System.out.println("[ClickerSupport]: Stop button has been pressed");
+                }
+                else {
+                    this.swapClickingStatus(true);
+
+                    Timeline timeline = new Timeline(
+                            new KeyFrame(Duration.seconds(2), e -> {
+                                Platform.runLater(() -> {
+                                    toggleButton.setDisable(false);
+                                });
+                            })
+                    );
+                    timeline.setCycleCount(1);
+                    timeline.play();
+
+                    this.startTimer();
+                    //clicker.startClicking(this.interval, this.clickCount);
+                    Platform.runLater(() -> {
+                        toggleButton.setText("Stop Clicking");
+                        toggleButton.setStyle("-fx-background-color: red;");
+                    });
+                    System.out.println("[ClickerSupport]: Start button has been pressed");
+                }
             }
             case CLICKER_TYPE.ONETIME -> {
+                System.out.println("[ClickerSupport]: OneTime");
 
+                toggleButton.setDisable(true);
+
+                if (clicker.getClickingStatus()) {
+                    this.swapClickingStatus(false);
+
+                    this.stopTimer();
+                    //clicker.stopClicking();
+                    Platform.runLater(() -> {
+                        toggleButton.setText("Start Clicking");
+                        toggleButton.setStyle("-fx-background-color: #27ae60;");
+                        toggleButton.setDisable(false);
+                    });
+                    System.out.println("[ClickerSupport]: Stop button has been pressed");
+                }
+                else {
+                    this.swapClickingStatus(true);
+
+                    Timeline timeline = new Timeline(
+                            new KeyFrame(Duration.seconds(2), e -> {
+                                Platform.runLater(() -> {
+                                    toggleButton.setDisable(false);
+                                });
+                            })
+                    );
+                    timeline.setCycleCount(1);
+                    timeline.play();
+
+                    this.startTimer();
+                    //clicker.startClicking(this.interval, this.clickCount);
+                    Platform.runLater(() -> {
+                        toggleButton.setText("Stop Clicking");
+                        toggleButton.setStyle("-fx-background-color: red;");
+                    });
+                    System.out.println("[ClickerSupport]: Start button has been pressed");
+                }
             }
             default -> {
                 System.out.println("[ClickerSupport] Clicker type not found");
@@ -310,5 +388,9 @@ public class ClickerMainController {
                 cManager.removeCircle();
             }
         }
+    }
+
+    protected void changeClickerType(CLICKER_TYPE clickerType){
+        this.clickerType = clickerType;
     }
 }
