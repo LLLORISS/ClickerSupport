@@ -237,4 +237,10 @@ public class ClickerMainController {
             System.exit(0);
         }
     }
+
+    @FXML
+    protected void addCircleButton(){
+        FloatingWidget widget = new FloatingWidget();
+        widget.start();
+    }
 }

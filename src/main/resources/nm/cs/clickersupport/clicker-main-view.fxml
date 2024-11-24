@@ -37,6 +37,7 @@
             <HBox alignment="CENTER" spacing="10">
                 <Button fx:id="toggleButton" text="Start Clicking" onAction="#toggleClick" styleClass="start-button"/>
                 <Button fx:id="tooltipButton" text="?" styleClass="tooltip-button"/>
+                <Button fx:id="addCircle" text="+" styleClass="start-button" onAction="#addCircleButton"/>
             </HBox>
         </VBox>
     </HBox>
