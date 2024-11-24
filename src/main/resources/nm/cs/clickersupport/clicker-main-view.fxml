@@ -25,6 +25,7 @@
         <HBox fx:id="additionalButtons" alignment="CENTER" spacing="5" prefWidth="200.0">
             <MenuBar>
                 <Menu text="Menu">
+                    <MenuItem text="Change Clicker type" styleClass="menu-item" onAction="#openChangeClickerType"/>
                     <MenuItem text="Change Parameters" styleClass="menu-item" onAction="#openChangeParameters"/>
                     <MenuItem text="Exit" styleClass="menu-item" onAction="#exitAction"/>
                 </Menu>
