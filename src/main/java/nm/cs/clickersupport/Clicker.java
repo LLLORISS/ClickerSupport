@@ -6,6 +6,8 @@ import javafx.util.Duration;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Clicker {
     private Timeline timeLine;
@@ -33,6 +35,28 @@ public class Clicker {
         timeLine.play();
     }
 
+    public void startGradualClicking(CirclesManager cManager){
+        this.isClicking = true;
+
+        timeLine = new Timeline();
+
+        Map<Integer, Point> map = cManager.getCoords();
+
+        for (int i = 1; i <= map.size(); i++) {
+            Point point = map.get(i);
+            timeLine.getKeyFrames().add(
+                    new KeyFrame(Duration.seconds(i), event -> performClickAt(point))
+            );
+        }
+
+        timeLine.setCycleCount(Timeline.INDEFINITE);
+        timeLine.play();
+    }
+
+    public void startOneTimeClicking(CirclesManager cManager){
+        this.isClicking = true;
+    }
+
     public void stopClicking(){
         this.isClicking = false;
         if(timeLine != null){
@@ -52,6 +76,21 @@ public class Clicker {
             System.out.println("Clicked at: " + mouseLocation.x + ", " + mouseLocation.y);
         }
         catch(AWTException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void performClickAt(Point point){
+        try {
+            Robot robot = new Robot();
+
+            robot.mouseMove(point.x, point.y);
+
+            robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+            robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+
+            System.out.println("Clicked at: " + point.x + ", " + point.y);
+        } catch (AWTException e) {
             e.printStackTrace();
         }
     }

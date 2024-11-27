@@ -6,6 +6,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
+import java.awt.*;
+
 public class ClickerCircle {
     private Circle circle;
     private Text text;
@@ -58,6 +60,15 @@ public class ClickerCircle {
     public void setColor(Color newColor) {
         this.circle.setFill(newColor);
     }
+
+    public Point getCoords() {
+        Bounds bounds = this.circle.localToScreen(this.circle.getBoundsInLocal());
+        int x = (int) (bounds.getMinX() + this.circle.getRadius());
+        int y = (int) (bounds.getMinY() + this.circle.getRadius());
+
+        return new Point(x, y);
+    }
+
 
     public void addToPane(Pane pane) {
         pane.getChildren().add(circle);
