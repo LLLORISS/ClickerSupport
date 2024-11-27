@@ -17,6 +17,8 @@ import org.jnativehook.keyboard.NativeKeyAdapter;
 import org.jnativehook.keyboard.NativeKeyEvent;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,6 +60,9 @@ public class ClickerMainController {
 
     CirclesManager cManager;
 
+    private List<FloatingWidget> openedStages;
+    private List<FloatingWidget> closedStages;
+
     private CLICKER_TYPE clickerType = CLICKER_TYPE.CLICKING;
 
     private void importStyles(Scene scene){
@@ -79,6 +84,7 @@ public class ClickerMainController {
         tooltipButton.setTooltip(tooltip);
 
         this.cManager = new CirclesManager();
+        this.openedStages = new ArrayList<>();
 
         loadConfigParameters();
 
@@ -259,7 +265,7 @@ public class ClickerMainController {
                         timeline.play();
 
                         this.startTimer();
-                        clicker.startGradualClicking(this.cManager);
+                        clicker.startGradualClicking(this.cManager, openedStages);
                         Platform.runLater(() -> {
                             toggleButton.setText("Stop Clicking");
                             toggleButton.setStyle("-fx-background-color: red;");
@@ -376,8 +382,17 @@ public class ClickerMainController {
 
     @FXML
     protected void addCircleButton(){
-        FloatingWidget widget = new FloatingWidget(this.cManager);
-        widget.start();
+        if(cManager.getCount() < 5) {
+            FloatingWidget widget = new FloatingWidget(this.cManager);
+            openedStages.add(widget);
+            widget.start();
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Point limit reached");
+            alert.setContentText("You can't add more than 5 click points");
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -392,6 +407,7 @@ public class ClickerMainController {
             if (lastOpenedStage != null && cManager.getCount() != 0) {
                 lastOpenedStage.close();
                 cManager.removeCircle();
+
             }
         }
     }

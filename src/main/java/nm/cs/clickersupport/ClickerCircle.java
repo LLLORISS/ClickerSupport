@@ -19,6 +19,7 @@ public class ClickerCircle {
         this.radius = radius;
 
         this.circle = new Circle(radius);
+        this.circle.setPickOnBounds(false);
         this.circle.setFill(color);
 
         this.text = new Text(textContent);

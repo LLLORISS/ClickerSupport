@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.List;
+
 public class FloatingWidget {
     private double offsetX;
     private double offsetY;
@@ -55,6 +57,7 @@ public class FloatingWidget {
         widget.getCircle().setOnMouseDragged(this::onMouseDragged);
         widget.getText().setOnMousePressed(this::onMousePressed);
         widget.getText().setOnMouseDragged(this::onMouseDragged);
+
     }
 
     private void onMousePressed(MouseEvent event) {
@@ -68,5 +71,9 @@ public class FloatingWidget {
     private void onMouseDragged(MouseEvent event) {
         stage.setX(event.getScreenX() - stageX);
         stage.setY(event.getScreenY() - stageY);
+    }
+
+    public Stage getStage(){
+        return this.stage;
     }
 }
