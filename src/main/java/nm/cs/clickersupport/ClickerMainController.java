@@ -36,9 +36,15 @@ public class ClickerMainController {
     @FXML
     private Button removeCircle;
     @FXML
+    private Button tooltipButton;
+
+    @FXML
     private Menu menuButton;
 
     private final Clicker clicker = new Clicker();
+    private CLICKER_TYPE clickerType = CLICKER_TYPE.CLICKING;
+    private CirclesManager cManager;
+    private List<FloatingWidget> openedStages;
 
     private boolean altPressed = false;
     private boolean bPressed = false;
@@ -47,28 +53,19 @@ public class ClickerMainController {
     private double interval;
 
     @FXML
-    private Button tooltipButton;
-
-    @FXML
     private Label currentIntervalLabel;
     @FXML
     private Label currentClickCountLabel;
-
-    @FXML
-    private Circle statusIndicator;
     @FXML
     private Label statusLabel;
     @FXML
     private Label runTimeLabel;
 
+    @FXML
+    private Circle statusIndicator;
+
     private Timeline clickerTimer;
     private int elapsedTime = 0;
-
-    CirclesManager cManager;
-
-    private List<FloatingWidget> openedStages;
-
-    private CLICKER_TYPE clickerType = CLICKER_TYPE.CLICKING;
 
     private void importStyles(Scene scene){
         scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/buttons.css").toExternalForm());
@@ -82,7 +79,7 @@ public class ClickerMainController {
     }
 
     public void initialize() {
-        Tooltip tooltip = new Tooltip("Гарячі клавіші для запуску: { ALT + B }.");
+        Tooltip tooltip = new Tooltip("Hot keys for launching: { ALT + B }.");
         tooltip.setShowDelay(Duration.millis(200));
         tooltip.setHideDelay(Duration.millis(100));
 
@@ -92,7 +89,6 @@ public class ClickerMainController {
         this.openedStages = new ArrayList<>();
 
         loadConfigParameters();
-
     }
 
     private void startTimer(){
@@ -128,7 +124,7 @@ public class ClickerMainController {
 
             Platform.runLater(()->{
                 statusIndicator.setStyle("-fx-fill: green;");
-                statusLabel.setText("Клікер увімкнено");
+                statusLabel.setText("Clicker started");
 
                 toggleButton.setText("Stop Clicking");
                 toggleButton.setStyle("-fx-background-color: red;");
@@ -143,7 +139,7 @@ public class ClickerMainController {
 
             Platform.runLater(()->{
                 statusIndicator.setStyle("-fx-fill: red;");
-                statusLabel.setText("Клікер вимкнено");
+                statusLabel.setText("Clicker stopped");
 
                 toggleButton.setText("Start Clicking");
                 toggleButton.setStyle("-fx-background-color: #27ae60;");
@@ -217,7 +213,7 @@ public class ClickerMainController {
     protected void toggleClick() {
         switch(this.clickerType){
             case CLICKER_TYPE.CLICKING -> {
-                System.out.println("[ClickerSupport]: Clicking");
+                System.out.println("[ClickerSupport] Clicker mode: Clicking");
 
                 loadConfigParameters();
 
@@ -226,7 +222,7 @@ public class ClickerMainController {
 
                     this.stopTimer();
                     clicker.stopClicking();
-                    System.out.println("[ClickerSupport]: Stop button has been pressed");
+                    System.out.println("[ClickerSupport] Stop button has been pressed");
                 }
                 else {
                     this.swapClickingStatus(true);
@@ -243,18 +239,15 @@ public class ClickerMainController {
 
                     this.startTimer();
                     clicker.startClicking(this.interval,this.clickCount);
-                    System.out.println("[ClickerSupport]: Start button has been pressed");
+                    System.out.println("[ClickerSupport] Start button has been pressed");
                 }
             }
             case CLICKER_TYPE.GRADUAL -> {
                 if(cManager.getCount() == 0){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Click point not found");
-                    alert.setContentText("Add at least one click point");
-                    alert.showAndWait();
+                    showGradualAlert();
                 }
                 else {
-                    System.out.println("[ClickerSupport]: Gradual");
+                    System.out.println("[ClickerSupport] Clicker mode: Gradual");
 
                     loadConfigParameters();
 
@@ -264,7 +257,7 @@ public class ClickerMainController {
                         this.stopTimer();
                         clicker.stopClickingGradual();
 
-                        System.out.println("[ClickerSupport]: Stop button has been pressed");
+                        System.out.println("[ClickerSupport] Stop button has been pressed");
                     } else {
                         this.swapClickingStatus(true);
                         Timeline timeline = new Timeline(
@@ -279,19 +272,16 @@ public class ClickerMainController {
 
                         this.startTimer();
                         clicker.startGradualClicking(this.cManager, openedStages,this.interval);
-                        System.out.println("[ClickerSupport]: Start button has been pressed");
+                        System.out.println("[ClickerSupport] Start button has been pressed");
                     }
                 }
             }
             case CLICKER_TYPE.ONETIME -> {
                 if(cManager.getCount() == 0){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Click point not found");
-                    alert.setContentText("Add at least one click point");
-                    alert.showAndWait();
+                    showGradualAlert();
                 }
                 else {
-                    System.out.println("[ClickerSupport]: OneTime");
+                    System.out.println("[ClickerSupport] Clicker mode: OneTime");
 
                     loadConfigParameters();
 
@@ -301,7 +291,7 @@ public class ClickerMainController {
                         this.stopTimer();
                         clicker.stopClickingOneTime();
 
-                        System.out.println("[ClickerSupport]: Stop button has been pressed");
+                        System.out.println("[ClickerSupport] Stop button has been pressed");
                     } else {
                         this.swapClickingStatus(true);
                         Timeline timeline = new Timeline(
@@ -316,7 +306,7 @@ public class ClickerMainController {
 
                         this.startTimer();
                         clicker.startOneTimeClicking(this.cManager, openedStages,this.interval);
-                        System.out.println("[ClickerSupport]: Start button has been pressed");
+                        System.out.println("[ClickerSupport] Start button has been pressed");
                     }
                 }
             }
@@ -422,5 +412,12 @@ public class ClickerMainController {
 
     protected void changeClickerType(CLICKER_TYPE clickerType){
         this.clickerType = clickerType;
+    }
+
+    private void showGradualAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Click point not found");
+        alert.setContentText("Add at least one click point");
+        alert.showAndWait();
     }
 }

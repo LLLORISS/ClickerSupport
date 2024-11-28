@@ -50,18 +50,6 @@ public class ClickerCircle {
         return text;
     }
 
-    public int getRadius() {
-        return radius;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color newColor) {
-        this.circle.setFill(newColor);
-    }
-
     public Point getCoords() {
         Bounds bounds = this.circle.localToScreen(this.circle.getBoundsInLocal());
         int x = (int) (bounds.getMinX() + this.circle.getRadius());

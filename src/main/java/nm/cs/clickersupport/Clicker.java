@@ -17,7 +17,16 @@ public class Clicker {
 
     List<FloatingWidget> closedStages;
 
+    private Robot robot;
+
     public Clicker(){
+        try {
+            this.robot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+            throw new RuntimeException("[ClickerSupport] Failed to create Robot instance");
+        }
+
         this.closedStages = new ArrayList<>();
         this.isClicking = false;
     }
@@ -89,7 +98,7 @@ public class Clicker {
                 }
 
                 try {
-                    Thread.sleep(this.interval);
+                    Thread.sleep((long) interval);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
@@ -127,40 +136,38 @@ public class Clicker {
         try{
             Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
 
-            Robot robot = new Robot();
-
             robot.mouseMove(mouseLocation.x, mouseLocation.y);
             robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
             robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
             System.out.println("Clicked at: " + mouseLocation.x + ", " + mouseLocation.y);
         }
-        catch(AWTException e){
+        catch(Exception e){
             e.printStackTrace();
         }
     }
 
     private void performClickAt(Point point){
         try {
-            Robot robot = new Robot();
-
             robot.mouseMove(point.x, point.y);
-
             robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
             robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 
             System.out.println("Clicked at: " + point.x + ", " + point.y);
-        } catch (AWTException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void reopenAllWidgets() {
         Platform.runLater(() -> {
-            for (FloatingWidget widget : closedStages) {
-                widget.getStage().show();
-                System.out.println("Size " + closedStages.size());
+            if (!closedStages.isEmpty()) {
+                for (FloatingWidget widget : closedStages) {
+                    if (!widget.getStage().isShowing()) {
+                        widget.getStage().show();
+                    }
+                }
+                closedStages.clear();
             }
-            closedStages.clear();
         });
     }
 }

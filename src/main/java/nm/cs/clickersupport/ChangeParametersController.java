@@ -33,8 +33,8 @@ public class ChangeParametersController {
         }
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Конфігурацію збережено");
-        alert.setHeaderText("Ваші параметри було збережено");
+        alert.setTitle("Configuration has been saved");
+        alert.setHeaderText("Your settings have been saved");
 
         alert.showAndWait();
     }

@@ -1,16 +1,15 @@
 package nm.cs.clickersupport;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CirclesManager {
-    private ArrayList<ClickerCircle> circles = new ArrayList();
+    private ArrayList<ClickerCircle> circles;
 
     public CirclesManager(){
-
+        circles = new ArrayList<>();
     }
 
     public boolean addCircle(ClickerCircle circle){
