@@ -17,8 +17,7 @@ public class CirclesManager {
         return circles.add(circle);
     }
 
-    public void removeCircle(){
-        circles.removeLast();
+    public void removeCircle(){circles.removeLast();
     }
 
     public void updateCirclesNumbers(){

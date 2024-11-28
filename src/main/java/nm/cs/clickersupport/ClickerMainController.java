@@ -31,6 +31,12 @@ enum CLICKER_TYPE{
 public class ClickerMainController {
     @FXML
     private Button toggleButton;
+    @FXML
+    private Button addCircle;
+    @FXML
+    private Button removeCircle;
+    @FXML
+    private Menu menuButton;
 
     private final Clicker clicker = new Clicker();
 
@@ -61,7 +67,6 @@ public class ClickerMainController {
     CirclesManager cManager;
 
     private List<FloatingWidget> openedStages;
-    private List<FloatingWidget> closedStages;
 
     private CLICKER_TYPE clickerType = CLICKER_TYPE.CLICKING;
 
@@ -120,12 +125,33 @@ public class ClickerMainController {
     public void swapClickingStatus(boolean isActive){
         if (isActive) {
             clicker.swapClickingStatus();
-            statusIndicator.setStyle("-fx-fill: green;");
-            statusLabel.setText("Клікер увімкнено");
+
+            Platform.runLater(()->{
+                statusIndicator.setStyle("-fx-fill: green;");
+                statusLabel.setText("Клікер увімкнено");
+
+                toggleButton.setText("Stop Clicking");
+                toggleButton.setStyle("-fx-background-color: red;");
+            });
+
+            addCircle.setDisable(true);
+            removeCircle.setDisable(true);
+            menuButton.setDisable(true);
         } else {
             clicker.swapClickingStatus();
-            statusIndicator.setStyle("-fx-fill: red;");
-            statusLabel.setText("Клікер вимкнено");
+
+            Platform.runLater(()->{
+                statusIndicator.setStyle("-fx-fill: red;");
+                statusLabel.setText("Клікер вимкнено");
+
+                toggleButton.setText("Start Clicking");
+                toggleButton.setStyle("-fx-background-color: #27ae60;");
+            });
+
+            toggleButton.setDisable(false);
+            addCircle.setDisable(false);
+            removeCircle.setDisable(false);
+            menuButton.setDisable(false);
         }
     }
 
@@ -200,11 +226,6 @@ public class ClickerMainController {
 
                     this.stopTimer();
                     clicker.stopClicking();
-                    Platform.runLater(() -> {
-                        toggleButton.setText("Start Clicking");
-                        toggleButton.setStyle("-fx-background-color: #27ae60;");
-                        toggleButton.setDisable(false);
-                    });
                     System.out.println("[ClickerSupport]: Stop button has been pressed");
                 }
                 else {
@@ -222,10 +243,6 @@ public class ClickerMainController {
 
                     this.startTimer();
                     clicker.startClicking(this.interval,this.clickCount);
-                    Platform.runLater(() -> {
-                        toggleButton.setText("Stop Clicking");
-                        toggleButton.setStyle("-fx-background-color: red;");
-                    });
                     System.out.println("[ClickerSupport]: Start button has been pressed");
                 }
             }
@@ -244,16 +261,11 @@ public class ClickerMainController {
                         this.swapClickingStatus(false);
 
                         this.stopTimer();
-                        clicker.stopClicking();
-                        Platform.runLater(() -> {
-                            toggleButton.setText("Start Clicking");
-                            toggleButton.setStyle("-fx-background-color: #27ae60;");
-                            toggleButton.setDisable(false);
-                        });
+                        clicker.stopClickingGradual();
+
                         System.out.println("[ClickerSupport]: Stop button has been pressed");
                     } else {
                         this.swapClickingStatus(true);
-
                         Timeline timeline = new Timeline(
                                 new KeyFrame(Duration.seconds(2), e -> {
                                     Platform.runLater(() -> {
@@ -265,11 +277,7 @@ public class ClickerMainController {
                         timeline.play();
 
                         this.startTimer();
-                        clicker.startGradualClicking(this.cManager, openedStages);
-                        Platform.runLater(() -> {
-                            toggleButton.setText("Stop Clicking");
-                            toggleButton.setStyle("-fx-background-color: red;");
-                        });
+                        clicker.startGradualClicking(this.cManager, openedStages,this.interval);
                         System.out.println("[ClickerSupport]: Start button has been pressed");
                     }
                 }
@@ -405,8 +413,9 @@ public class ClickerMainController {
                     .orElse(null);
 
             if (lastOpenedStage != null && cManager.getCount() != 0) {
-                lastOpenedStage.close();
+                openedStages.removeLast();
                 cManager.removeCircle();
+                lastOpenedStage.close();
 
             }
         }

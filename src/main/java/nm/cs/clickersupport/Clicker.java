@@ -24,7 +24,7 @@ public class Clicker {
 
     public boolean getClickingStatus(){ return this.isClicking; }
     public void swapClickingStatus() {
-        Platform.runLater(() -> this.isClicking = !isClicking);
+        this.isClicking = !isClicking;
     }
 
     public void startClicking(double interval, int clickCount){
@@ -42,13 +42,12 @@ public class Clicker {
         timeLine.play();
     }
 
-    public void startGradualClicking(CirclesManager cManager, List<FloatingWidget> openedStages) {
+    public void startGradualClicking(CirclesManager cManager, List<FloatingWidget> openedStages, double interval) {
         this.isClicking = true;
 
         timeLine = new Timeline();
 
         Map<Integer, Point> map = cManager.getCoords();
-
 
         Platform.runLater(() -> {
             for (FloatingWidget widget : openedStages) {
@@ -57,11 +56,13 @@ public class Clicker {
             }
         });
 
+        int clickIndex = 0;
         for (int i = 1; i <= map.size(); i++) {
             Point point = map.get(i);
             timeLine.getKeyFrames().add(
-                    new KeyFrame(Duration.seconds(i), event -> performClickAt(point))
+                    new KeyFrame(Duration.seconds(clickIndex * interval), event -> performClickAt(point))
             );
+            clickIndex++;
         }
 
         timeLine.setCycleCount(Timeline.INDEFINITE);
@@ -73,6 +74,13 @@ public class Clicker {
     }
 
     public void stopClicking(){
+        this.isClicking = false;
+        if(timeLine != null){
+            timeLine.stop();
+        }
+    }
+
+    public void stopClickingGradual(){
         this.isClicking = false;
         if(timeLine != null){
             timeLine.stop();
@@ -115,7 +123,7 @@ public class Clicker {
         Platform.runLater(() -> {
             for (FloatingWidget widget : closedStages) {
                 widget.getStage().show();
-
+                System.out.println("Size " + closedStages.size());
             }
             closedStages.clear();
         });

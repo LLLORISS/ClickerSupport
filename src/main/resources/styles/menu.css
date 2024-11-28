@@ -1,38 +1,94 @@
 /*Styles for menu*/
 
 .menu {
-    -fx-background-color: #2c3e50;
+    -fx-background-color: #34495e;
     -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 5px;
-    -fx-border-radius: 5px;
+    -fx-font-size: 16px;
+    -fx-padding: 8px;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0, 2);
 }
 
 .menu-item {
-    -fx-background-color: #2c3e50;
+    -fx-background-color: transparent;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-padding: 10px 20px;
+    -fx-border-radius: 4px;
+    -fx-alignment: center-left;
+    -fx-background-insets: 0;
 }
 
 .menu-item:hover {
-    -fx-background-color: #16a085;
+    -fx-background-color: #1abc9c;
     -fx-cursor: hand;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-transition: background-color 0.3s ease;
 }
 
 .menu-bar {
     -fx-background-color: #2c3e50;
     -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 0;
+}
+
+.menu-button {
+    -fx-background-color: #34495e;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 4px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0.5, 0, 2);
+}
+
+.menu-button:hover {
+    -fx-background-color: #16a085;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-transition: background-color 0.3s ease;
+}
+
+.context-menu {
+    -fx-background-color: #34495e;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0, 2);
+}
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-alignment: center-left;
+}
+
+.menu-item:hover {
+    -fx-background-color: #16a085;
+    -fx-cursor: hand;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-transition: background-color 0.3s ease;
 }
 
 .menu-button {
     -fx-background-color: #2c3e50;
     -fx-text-fill: white;
     -fx-font-size: 14px;
-    -fx-padding: 5px 15px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0, 2);
 }
 
 .menu-button:hover {
-    -fx-background-color: #16a085;
+    -fx-background-color: #1abc9c;
+    -fx-font-weight: bold;
+    -fx-transition: background-color 0.3s ease;
 }
 

@@ -22,9 +22,9 @@
         <Circle fx:id="statusIndicator" radius="10" fill="red"/>
         <Label fx:id="statusLabel" text="Клікер вимкнено" styleClass="status-label"/>
         <Label fx:id="runTimeLabel" text="Час роботи: 00:00" styleClass="status-label"/>
-        <HBox fx:id="additionalButtons" alignment="CENTER" spacing="5" prefWidth="200.0">
+        <HBox fx:id="additionalButtons" alignment="TOP_RIGHT" spacing="5" prefWidth="275.0">
             <MenuBar>
-                <Menu text="Menu">
+                <Menu fx:id="menuButton" text="Menu">
                     <MenuItem text="Change Clicker type" styleClass="menu-item" onAction="#openChangeClickerType"/>
                     <MenuItem text="Change Parameters" styleClass="menu-item" onAction="#openChangeParameters"/>
                     <MenuItem text="Exit" styleClass="menu-item" onAction="#exitAction"/>
