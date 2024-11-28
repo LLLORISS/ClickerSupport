@@ -69,9 +69,37 @@ public class Clicker {
         timeLine.play();
     }
 
-    public void startOneTimeClicking(CirclesManager cManager){
+    public void startOneTimeClicking(CirclesManager cManager, List<FloatingWidget> openedStages, double interval) {
         this.isClicking = true;
+
+        Map<Integer, Point> map = cManager.getCoords();
+
+        Platform.runLater(() -> {
+
+            for (FloatingWidget widget : openedStages) {
+                widget.getStage().hide();
+                closedStages.add(widget);
+            }
+        });
+
+        Thread clickThread = new Thread(() -> {
+            while (isClicking) {
+                for (Point point : map.values()) {
+                    performClickAt(point);
+                }
+
+                try {
+                    Thread.sleep(this.interval);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+
+        clickThread.setDaemon(true);
+        clickThread.start();
     }
+
 
     public void stopClicking(){
         this.isClicking = false;
@@ -84,6 +112,13 @@ public class Clicker {
         this.isClicking = false;
         if(timeLine != null){
             timeLine.stop();
+            reopenAllWidgets();
+        }
+    }
+
+    public void stopClickingOneTime(){
+        this.isClicking = false;
+        if(timeLine != null){
             reopenAllWidgets();
         }
     }
