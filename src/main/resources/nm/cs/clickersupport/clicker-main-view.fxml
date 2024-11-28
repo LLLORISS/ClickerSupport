@@ -20,8 +20,8 @@
 
     <HBox alignment="CENTER_LEFT" spacing="10" styleClass="status-panel">
         <Circle fx:id="statusIndicator" radius="10" fill="red"/>
-        <Label fx:id="statusLabel" text="Клікер вимкнено" styleClass="status-label"/>
-        <Label fx:id="runTimeLabel" text="Час роботи: 00:00" styleClass="status-label"/>
+        <Label fx:id="statusLabel" text="Clicker stopped" styleClass="status-label"/>
+        <Label fx:id="runTimeLabel" text="Work time: 00:00" styleClass="status-label"/>
         <HBox fx:id="additionalButtons" alignment="TOP_RIGHT" spacing="5" prefWidth="275.0">
             <MenuBar>
                 <Menu fx:id="menuButton" text="Menu">
@@ -46,11 +46,11 @@
 
     <VBox styleClass="config-box" alignment="CENTER" spacing="10">
         <HBox alignment="CENTER" spacing="10">
-            <Text text="Поточний інтервал:" styleClass="text-style"/>
+            <Text text="Current interval:" styleClass="text-style"/>
             <Label fx:id="currentIntervalLabel" text="0" styleClass="label"/>
         </HBox>
         <HBox alignment="CENTER" spacing="10">
-            <Text text="Поточна кількість кліків:" styleClass="text-style"/>
+            <Text text="Current clicks count:" styleClass="text-style"/>
             <Label fx:id="currentClickCountLabel" text="0" styleClass="label"/>
     </HBox>
     </VBox>

@@ -326,7 +326,7 @@ public class ClickerMainController {
                 return controller;
             });
 
-            Scene scene = new Scene(loader.load());
+            Scene scene = new Scene(loader.load(), 500, 400);
             this.importStyles(scene);
 
             Stage stage = new Stage();
@@ -350,7 +350,7 @@ public class ClickerMainController {
                 return controller;
             });
 
-            Scene scene = new Scene(loader.load());
+            Scene scene = new Scene(loader.load(), 400,400);
             this.importStyles(scene);
 
             Stage stage = new Stage();

@@ -7,7 +7,7 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="nm.cs.clickersupport.ChangeClickerTypeController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="500.0" prefWidth="400.0">
 
     <VBox layoutX="50.0" layoutY="50.0" spacing="20.0">
         <Text text="Select Clicker type" styleClass="header-text"/>
@@ -28,7 +28,9 @@
         </HBox>
     </VBox>
 
-    <Button text="Confirm" layoutX="250.0" layoutY="350.0" prefWidth="100.0" fx:id="confirmButton"
-            onAction="#confirmChangeButton" styleClass="button"/>
+    <!-- Кнопка, прив'язана до нижнього центру -->
+    <Button text="Confirm" fx:id="confirmButton" onAction="#confirmChangeButton"
+            AnchorPane.leftAnchor="150" AnchorPane.rightAnchor="150" AnchorPane.bottomAnchor="20"
+            prefWidth="100.0" styleClass="button"/>
 
 </AnchorPane>

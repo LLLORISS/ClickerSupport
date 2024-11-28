@@ -38,7 +38,7 @@ public class ClickerMainWindow extends Application {
         }
 
         FXMLLoader fxmlLoader = new FXMLLoader(ClickerMainWindow.class.getResource("clicker-main-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 700, 800);
+        Scene scene = new Scene(fxmlLoader.load(), 700, 500);
         this.importStyles(scene);
 
         ClickerMainController controller = fxmlLoader.getController();

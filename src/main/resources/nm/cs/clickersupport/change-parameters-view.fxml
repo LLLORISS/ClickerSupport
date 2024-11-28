@@ -6,13 +6,14 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="nm.cs.clickersupport.ChangeParametersController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="500.0" prefWidth="400.0">
 
-    <Label text="Число натискань:" layoutX="20" layoutY="30" styleClass="label-subtitle" />
+    <Label text="Clicks count:" layoutX="20" layoutY="30" styleClass="label-subtitle" />
     <TextField fx:id="clicksField" layoutX="180" layoutY="30" prefWidth="200" />
 
-    <Label text="Затримка:" layoutX="20" layoutY="80" styleClass="label-subtitle" />
+    <Label text="Interval:" layoutX="20" layoutY="80" styleClass="label-subtitle" />
     <TextField fx:id="intervalField" layoutX="180" layoutY="80" prefWidth="200" />
 
-    <Button text="Зберегти конфігурацію" layoutX="180" layoutY="130" onAction="#saveParameters" defaultButton="true"/>
+    <Button text="Save" onAction="#saveParameters" defaultButton="true"
+            AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="110" AnchorPane.rightAnchor="110"/>
 </AnchorPane>
