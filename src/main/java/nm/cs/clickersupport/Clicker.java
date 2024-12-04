@@ -36,99 +36,132 @@ public class Clicker {
         this.isClicking = !isClicking;
     }
 
-    public void startClicking(double interval, int clickCount){
+
+    public void startClicking(CLICKER_TYPE type, double interval, int clickCount,
+                              CirclesManager cManager, List<FloatingWidget> openedStages){
         this.isClicking = true;
 
-        timeLine = new Timeline();
+        switch(type){
+            case CLICKING -> {
+                timeLine = new Timeline();
 
-        for (int i = 0; i < clickCount; i++) {
-            timeLine.getKeyFrames().add(
-                    new KeyFrame(Duration.seconds(i * interval), event -> performClick())
-            );
-        }
-
-        timeLine.setCycleCount(Timeline.INDEFINITE);
-        timeLine.play();
-    }
-
-    public void startGradualClicking(CirclesManager cManager, List<FloatingWidget> openedStages, double interval) {
-        this.isClicking = true;
-
-        timeLine = new Timeline();
-
-        Map<Integer, Point> map = cManager.getCoords();
-
-        Platform.runLater(() -> {
-            for (FloatingWidget widget : openedStages) {
-                widget.getStage().hide();
-                closedStages.add(widget);
-            }
-        });
-
-        int clickIndex = 0;
-        for (int i = 1; i <= map.size(); i++) {
-            Point point = map.get(i);
-            timeLine.getKeyFrames().add(
-                    new KeyFrame(Duration.seconds(clickIndex * interval), event -> performClickAt(point))
-            );
-            clickIndex++;
-        }
-
-        timeLine.setCycleCount(Timeline.INDEFINITE);
-        timeLine.play();
-    }
-
-    public void startOneTimeClicking(CirclesManager cManager, List<FloatingWidget> openedStages, double interval) {
-        this.isClicking = true;
-
-        Map<Integer, Point> map = cManager.getCoords();
-
-        Platform.runLater(() -> {
-
-            for (FloatingWidget widget : openedStages) {
-                widget.getStage().hide();
-                closedStages.add(widget);
-            }
-        });
-
-        Thread clickThread = new Thread(() -> {
-            while (isClicking) {
-                for (Point point : map.values()) {
-                    performClickAt(point);
+                for (int i = 0; i < clickCount; i++) {
+                    timeLine.getKeyFrames().add(
+                            new KeyFrame(Duration.seconds(i * interval), event -> performClick())
+                    );
                 }
 
-                try {
-                    Thread.sleep((long) interval);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
+                timeLine.setCycleCount(Timeline.INDEFINITE);
+                timeLine.play();
+            }
+            case GRADUAL -> {
+
+                timeLine = new Timeline();
+
+                Map<Integer, Point> map = cManager.getCoords();
+
+                if (map.isEmpty()) {
+                    System.out.println("[ClickerSupport] No points available for GRADUAL clicking.");
+                    this.isClicking = false;
+                    return;
+                }
+
+
+                Platform.runLater(() -> {
+                    for (FloatingWidget widget : openedStages) {
+                        widget.getStage().hide();
+                        closedStages.add(widget);
+                    }
+                });
+
+                if (map.size() == 1) {
+                    Point point = map.values().iterator().next();
+                    timeLine.getKeyFrames().add(
+                            new KeyFrame(Duration.seconds(interval), event -> performClick(point))
+                    );
+                    timeLine.setCycleCount(Timeline.INDEFINITE);
+                    timeLine.play();
+                } else {
+                    int clickIndex = 0;
+                    for (int i = 1; i <= map.size(); i++) {
+                        Point point = map.get(i);
+                        timeLine.getKeyFrames().add(
+                                new KeyFrame(Duration.seconds(clickIndex * interval), event -> performClick(point))
+                        );
+                        clickIndex++;
+                    }
+                    timeLine.setCycleCount(Timeline.INDEFINITE);
+                    timeLine.play();
                 }
             }
-        });
+            case ONETIME -> {
+                Map<Integer, Point> map = cManager.getCoords();
 
-        clickThread.setDaemon(true);
-        clickThread.start();
-    }
+                if (map.isEmpty()) {
+                    System.out.println("[ClickerSupport] No points available for One Time clicking.");
+                    this.isClicking = false;
+                    return;
+                }
 
+                Platform.runLater(() -> {
+                    for (FloatingWidget widget : openedStages) {
+                        widget.getStage().hide();
+                        closedStages.add(widget);
+                    }
+                });
 
-    public void stopClicking(){
-        this.isClicking = false;
-        if(timeLine != null){
-            timeLine.stop();
+                long clickDelay = 500;
+
+                Thread clickThread = new Thread(() -> {
+                    while (isClicking) {
+                        if (!isClicking)
+                        {
+                            break;
+                        }
+                        for (Point point : map.values()) {
+                            if (!isClicking) {
+                                break;
+                            }
+                            performClick(point);
+
+                            try {
+                                Thread.sleep(clickDelay);
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
+                            }
+                        }
+
+                        try {
+                            Thread.sleep((long) interval);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    }
+                });
+
+                clickThread.setDaemon(true);
+                clickThread.start();
+            }
+            default -> {
+                this.isClicking = false;
+                System.out.println("[ClickerSupport] Error clicker type");
+            }
         }
     }
 
-    public void stopClickingGradual(){
-        this.isClicking = false;
-        if(timeLine != null){
+    public void stopClicking(CLICKER_TYPE type){
+        if(type == CLICKER_TYPE.CLICKING && timeLine != null){
+            timeLine.stop();
+            this.isClicking = false;
+        }
+        else if(type == CLICKER_TYPE.GRADUAL && timeLine != null){
             timeLine.stop();
             reopenAllWidgets();
+            this.isClicking = false;
         }
-    }
-
-    public void stopClickingOneTime(){
-        this.isClicking = false;
-        if(timeLine != null){
+        else if(type == CLICKER_TYPE.ONETIME){
             reopenAllWidgets();
+            this.isClicking = false;
         }
     }
 
@@ -146,7 +179,7 @@ public class Clicker {
         }
     }
 
-    private void performClickAt(Point point){
+    private void performClick(Point point){
         try {
             robot.mouseMove(point.x, point.y);
             robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);

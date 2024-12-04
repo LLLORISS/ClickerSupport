@@ -29,6 +29,7 @@ enum CLICKER_TYPE{
 }
 
 public class ClickerMainController {
+
     @FXML
     private Button toggleButton;
     @FXML
@@ -221,7 +222,7 @@ public class ClickerMainController {
                     this.swapClickingStatus(false);
 
                     this.stopTimer();
-                    clicker.stopClicking();
+                    clicker.stopClicking(this.clickerType);
                     System.out.println("[ClickerSupport] Stop button has been pressed");
                 }
                 else {
@@ -238,7 +239,7 @@ public class ClickerMainController {
                     timeline.play();
 
                     this.startTimer();
-                    clicker.startClicking(this.interval,this.clickCount);
+                    clicker.startClicking(this.clickerType, this.interval, this.clickCount, this.cManager, this.openedStages);
                     System.out.println("[ClickerSupport] Start button has been pressed");
                 }
             }
@@ -255,7 +256,7 @@ public class ClickerMainController {
                         this.swapClickingStatus(false);
 
                         this.stopTimer();
-                        clicker.stopClickingGradual();
+                        clicker.stopClicking(this.clickerType);
 
                         System.out.println("[ClickerSupport] Stop button has been pressed");
                     } else {
@@ -271,7 +272,7 @@ public class ClickerMainController {
                         timeline.play();
 
                         this.startTimer();
-                        clicker.startGradualClicking(this.cManager, openedStages,this.interval);
+                        clicker.startClicking(this.clickerType, this.interval, this.clickCount, this.cManager, this.openedStages);
                         System.out.println("[ClickerSupport] Start button has been pressed");
                     }
                 }
@@ -289,7 +290,7 @@ public class ClickerMainController {
                         this.swapClickingStatus(false);
 
                         this.stopTimer();
-                        clicker.stopClickingOneTime();
+                        clicker.stopClicking(this.clickerType);
 
                         System.out.println("[ClickerSupport] Stop button has been pressed");
                     } else {
@@ -305,7 +306,7 @@ public class ClickerMainController {
                         timeline.play();
 
                         this.startTimer();
-                        clicker.startOneTimeClicking(this.cManager, openedStages,this.interval);
+                        clicker.startClicking(this.clickerType, this.interval, this.clickCount, this.cManager, this.openedStages);
                         System.out.println("[ClickerSupport] Start button has been pressed");
                     }
                 }
