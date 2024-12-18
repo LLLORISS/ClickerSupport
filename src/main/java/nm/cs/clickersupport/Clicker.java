@@ -4,6 +4,8 @@ import javafx.application.Platform;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -14,6 +16,8 @@ import java.util.List;
 public class Clicker {
     private Timeline timeLine;
     private boolean isClicking;
+    private Recorder recorder;
+    private Replayer replayer;
 
     List<FloatingWidget> closedStages;
 
@@ -142,6 +146,18 @@ public class Clicker {
                 clickThread.setDaemon(true);
                 clickThread.start();
             }
+            case RECORDING -> {
+                recorder = new Recorder();
+
+                GlobalScreen.addNativeMouseListener(recorder);
+
+                recorder.startRecording();
+            }
+            case REPLAYING -> {
+                replayer = new Replayer(this.recorder);
+
+                replayer.startReplaying();
+            }
             default -> {
                 this.isClicking = false;
                 System.out.println("[ClickerSupport] Error clicker type");
@@ -149,7 +165,7 @@ public class Clicker {
         }
     }
 
-    public void stopClicking(CLICKER_TYPE type){
+    public void stopClicking(CLICKER_TYPE type) throws NativeHookException {
         if(type == CLICKER_TYPE.CLICKING && timeLine != null){
             timeLine.stop();
             this.isClicking = false;
@@ -161,6 +177,14 @@ public class Clicker {
         }
         else if(type == CLICKER_TYPE.ONETIME){
             reopenAllWidgets();
+            this.isClicking = false;
+        }
+        else if(type == CLICKER_TYPE.RECORDING){
+            recorder.stopRecording();
+            this.isClicking = false;
+        }
+        else if(type == CLICKER_TYPE.REPLAYING){
+            replayer.stopReplaying();
             this.isClicking = false;
         }
     }

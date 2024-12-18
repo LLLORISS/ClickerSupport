@@ -14,6 +14,10 @@ public class ChangeClickerTypeController {
     private CheckBox checkBoxGradual;
     @FXML
     private CheckBox checkBoxOneTime;
+    @FXML
+    private CheckBox checkBoxRecording;
+    @FXML
+    private CheckBox checkBoxReplaying;
 
     @FXML
     private Button tooltipButtonClicking;
@@ -21,6 +25,10 @@ public class ChangeClickerTypeController {
     private Button tooltipButtonGradual;
     @FXML
     private Button tooltipButtonOneTime;
+    @FXML
+    private Button tooltipButtonRecording;
+    @FXML
+    private Button tooltipButtonReplaying;
 
     @FXML
     private Button confirmButton;
@@ -29,9 +37,11 @@ public class ChangeClickerTypeController {
 
     @FXML
     public void initialize() {
-        setupExclusiveCheckBox(checkBoxClicking, checkBoxGradual, checkBoxOneTime);
-        setupExclusiveCheckBox(checkBoxGradual, checkBoxClicking, checkBoxOneTime);
-        setupExclusiveCheckBox(checkBoxOneTime, checkBoxClicking, checkBoxGradual);
+        setupExclusiveCheckBox(checkBoxClicking, checkBoxGradual, checkBoxOneTime, checkBoxRecording, checkBoxReplaying);
+        setupExclusiveCheckBox(checkBoxGradual, checkBoxClicking, checkBoxOneTime, checkBoxRecording, checkBoxReplaying);
+        setupExclusiveCheckBox(checkBoxOneTime, checkBoxClicking, checkBoxGradual, checkBoxRecording, checkBoxReplaying);
+        setupExclusiveCheckBox(checkBoxRecording, checkBoxClicking, checkBoxGradual, checkBoxOneTime, checkBoxReplaying);
+        setupExclusiveCheckBox(checkBoxReplaying, checkBoxClicking, checkBoxGradual, checkBoxOneTime, checkBoxRecording);
 
         Tooltip tooltipClicking = new Tooltip("Clicking");
         tooltipClicking.setShowDelay(Duration.millis(200));
@@ -48,13 +58,28 @@ public class ChangeClickerTypeController {
         tooltipOneTime.setHideDelay(Duration.millis(100));
         tooltipButtonOneTime.setTooltip(tooltipOneTime);
 
+        Tooltip tooltipRecording = new Tooltip("Recording");
+        tooltipOneTime.setShowDelay(Duration.millis(200));
+        tooltipOneTime.setHideDelay(Duration.millis(100));
+        tooltipButtonRecording.setTooltip(tooltipRecording);
+
+        Tooltip tooltipReplaying = new Tooltip("Replaying");
+        tooltipOneTime.setShowDelay(Duration.millis(200));
+        tooltipOneTime.setHideDelay(Duration.millis(100));
+        tooltipButtonReplaying.setTooltip(tooltipReplaying);
+
         if (this.mainController.getClickerType() == CLICKER_TYPE.CLICKING) {
             checkBoxClicking.setSelected(true);
         } else if (this.mainController.getClickerType() == CLICKER_TYPE.GRADUAL) {
             checkBoxGradual.setSelected(true);
         } else if (this.mainController.getClickerType() == CLICKER_TYPE.ONETIME) {
             checkBoxOneTime.setSelected(true);
+        } else if(this.mainController.getClickerType() == CLICKER_TYPE.RECORDING) {
+            checkBoxRecording.setSelected(true);
+        } else if(this.mainController.getClickerType() == CLICKER_TYPE.REPLAYING) {
+            checkBoxReplaying.setSelected(true);
         }
+
     }
 
     public void setMainController(ClickerMainController mainController) {
@@ -79,6 +104,10 @@ public class ChangeClickerTypeController {
             mainController.changeClickerType(CLICKER_TYPE.GRADUAL);
         } else if (checkBoxOneTime.isSelected()) {
             mainController.changeClickerType(CLICKER_TYPE.ONETIME);
+        } else if (checkBoxRecording.isSelected()) {
+            mainController.changeClickerType(CLICKER_TYPE.RECORDING);
+        } else if (checkBoxReplaying.isSelected()) {
+            mainController.changeClickerType(CLICKER_TYPE.REPLAYING);
         } else {
             System.out.println("[Clicker Support] CheckBox error");
             mainController.changeClickerType(CLICKER_TYPE.CLICKING);

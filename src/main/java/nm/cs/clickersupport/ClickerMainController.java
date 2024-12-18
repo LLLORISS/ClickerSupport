@@ -19,13 +19,16 @@ import org.jnativehook.keyboard.NativeKeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 enum CLICKER_TYPE{
     CLICKING,
     GRADUAL,
-    ONETIME
+    ONETIME,
+    RECORDING,
+    REPLAYING
 }
 
 public class ClickerMainController {
@@ -46,7 +49,6 @@ public class ClickerMainController {
     private CLICKER_TYPE clickerType = CLICKER_TYPE.CLICKING;
     private CirclesManager cManager;
     private List<FloatingWidget> openedStages;
-
     private boolean altPressed = false;
     private boolean bPressed = false;
 
@@ -69,10 +71,10 @@ public class ClickerMainController {
     private int elapsedTime = 0;
 
     private void importStyles(Scene scene){
-        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/buttons.css").toExternalForm());
-        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/labels.css").toExternalForm());
-        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/main.css").toExternalForm());
-        scene.getStylesheets().add(ClickerMainWindow.class.getResource("/styles/tooltips.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(ClickerMainWindow.class.getResource("/styles/buttons.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(ClickerMainWindow.class.getResource("/styles/labels.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(ClickerMainWindow.class.getResource("/styles/main.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(ClickerMainWindow.class.getResource("/styles/tooltips.css")).toExternalForm());
     }
 
     public CLICKER_TYPE getClickerType(){
@@ -167,9 +169,12 @@ public class ClickerMainController {
             GlobalScreen.addNativeKeyListener(new NativeKeyAdapter(){
                 @Override
                 public void nativeKeyPressed(NativeKeyEvent event){
-                    handleNativeKeyPress(event);
+                    try {
+                        handleNativeKeyPress(event);
+                    } catch (NativeHookException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-
                 @Override
                 public void nativeKeyReleased(NativeKeyEvent event) {
                     handleNativeKeyRelease(event);
@@ -181,7 +186,7 @@ public class ClickerMainController {
         }
     }
 
-    private void handleNativeKeyPress(NativeKeyEvent event){
+    private void handleNativeKeyPress(NativeKeyEvent event) throws NativeHookException {
         if (event.getKeyCode() == NativeKeyEvent.VC_ALT) {
             this.altPressed = true;
         }
@@ -203,15 +208,14 @@ public class ClickerMainController {
     }
 
     private void loadConfigParameters() {
-        ConfigManager cfgManager = new ConfigManager();
-        this.clickCount = cfgManager.getClickCount();
-        this.interval = cfgManager.getInterval();
+        this.clickCount = ConfigManager.getClickCount();
+        this.interval = ConfigManager.getInterval();
 
         updateParametersLabel(this.interval, this.clickCount);
     }
 
     @FXML
-    protected void toggleClick() {
+    protected void toggleClick() throws NativeHookException {
         switch(this.clickerType){
             case CLICKER_TYPE.CLICKING -> {
                 System.out.println("[ClickerSupport] Clicker mode: Clicking");
@@ -309,6 +313,33 @@ public class ClickerMainController {
                         clicker.startClicking(this.clickerType, this.interval, this.clickCount, this.cManager, this.openedStages);
                         System.out.println("[ClickerSupport] Start button has been pressed");
                     }
+                }
+            }
+            case CLICKER_TYPE.RECORDING -> {
+                System.out.println("[ClickerSupport] Clicker mode: Recording");
+                if (clicker.getClickingStatus()) {
+                    this.swapClickingStatus(false);
+
+                    this.stopTimer();
+                    clicker.stopClicking(this.clickerType);
+                    System.out.println("[ClickerSupport] Recording has been stopped");
+                } else {
+                    this.swapClickingStatus(true);
+
+                    Timeline timeline = new Timeline(
+                            new KeyFrame(Duration.seconds(2), e -> {
+                                Platform.runLater(() -> {
+                                    toggleButton.setDisable(false);
+                                });
+                            })
+                    );
+                    timeline.setCycleCount(1);
+                    timeline.play();
+
+                    this.startTimer();
+                    System.out.println("[ClickerSupport] Recording has been pressed");
+
+                    clicker.startClicking(this.clickerType,0,0,this.cManager,this.openedStages);
                 }
             }
             default -> {

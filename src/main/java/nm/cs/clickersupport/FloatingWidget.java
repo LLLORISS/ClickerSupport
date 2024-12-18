@@ -7,8 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.util.List;
-
 public class FloatingWidget {
     private double offsetX;
     private double offsetY;

@@ -26,6 +26,14 @@
             <Button fx:id="tooltipButtonOneTime" text="?" styleClass="tooltip-button"/>
             <CheckBox fx:id="checkBoxOneTime" text="One Time" />
         </HBox>
+        <HBox spacing="10.0">
+            <Button fx:id="tooltipButtonRecording" text="?" styleClass="tooltip-button"/>
+            <CheckBox fx:id="checkBoxRecording" text="Recording" />
+        </HBox>
+        <HBox spacing="10.0">
+            <Button fx:id="tooltipButtonReplaying" text="?" styleClass="tooltip-button"/>
+            <CheckBox fx:id="checkBoxReplaying" text="Replaying" />
+        </HBox>
     </VBox>
 
     <Button text="Confirm" fx:id="confirmButton" onAction="#confirmChangeButton"
